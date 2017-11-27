@@ -1,4 +1,4 @@
-// "Cheats" https://github.com/mpj/fff-graphql-goodreads
+// "Cheatz" https://github.com/mpj/fff-graphql-goodreads
 
 const {
   GraphQLSchema,
@@ -10,34 +10,11 @@ const {
 
 } = require("graphql");
 
-const LocationType = new GraphQLObjectType({
-  name: "Location",
-  description: "...",
+const  LocationType = require('./types/LocationType');
+const  RootMutationType = require('./mutations/RootMutationType');
 
-  fields: () => ({
-    title: {
-      type: GraphQLString,
-      resolve: location => location.title
-    }
-  })
-});
 
-// Mutations
-const RootMutationType = new GraphQLObjectType({
-  name: "rootMutation",
-  fields: () => ({
-    fakeNews: {
-      type: new GraphQLList(LocationType),
-      args: {
-        title: { type: GraphQLString }
-      },
-      resolve: (value, {title} ) => {
-        return [{ title }];
-      }
-    }
-  })
-})
-
+// Export schema
 module.exports = new GraphQLSchema({
   query: new GraphQLObjectType({
     name: "Query",

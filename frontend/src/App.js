@@ -88,10 +88,14 @@ const update = {
       // Get current data
       const data = proxy.readQuery({ query });
 
-      // update data in cache
-      data.location = fakeNews;
       // write changes
-      proxy.writeQuery({ query, data });
+      proxy.writeQuery({
+        query,
+        data: {
+          ...data,
+          location: fakeNews
+        }
+      });
     }
   }
 };

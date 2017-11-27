@@ -2,11 +2,20 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fetch = require('node-fetch');
 const { graphqlExpress, graphiqlExpress } = require('apollo-server-express');
-
+const mongoose = require("mongoose");
 const myGraphQLSchema = require('./graphql/Schema');
 const PORT = 3000;
 
 const app = express();
+
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection error:"));
+db.once("open", function() {
+  // we're connected!
+  console.log("Connected to Mongo");
+});
+
+mongoose.Promise = global.Promise;
 
 
 // bodyParser is needed just for POST.
