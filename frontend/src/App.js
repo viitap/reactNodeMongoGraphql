@@ -1,21 +1,99 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { graphql, compose } from "react-apollo";
+import gql from "graphql-tag";
+import styled from "styled-components";
+import "./App.css";
+
+// My awesome styled component
+const Wrapper = styled.div`
+  color: red;
+`;
 
 class App extends Component {
+  static propTypes = {
+    data: PropTypes.shape({
+      locations: PropTypes.arrayOf(
+        PropTypes.shape({
+          title: PropTypes.string
+        })
+      )
+    })
+  };
+
+  state = {
+    input: ""
+  };
+
+  clickHandler = () => {
+    const { input } = this.state;
+    const { mutate } = this.props;
+    mutate({
+      variables: { locationTitle: input }
+    });
+  };
+
+  inputChange = e => {
+    this.setState({
+      input: e.target.value
+    });
+  };
+
   render() {
+    const { data: { location, loading } } = this.props;
+    if (loading) return null;
+
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          Kissa koira
-        </p>
-      </div>
+      <Wrapper>
+        <div>Locations: {location.map(l => l.title)}</div>
+        <div>
+          <input
+            type="text"
+            value={this.state.input}
+            onChange={this.inputChange}
+          />
+        </div>
+        <div>
+          <button onClick={this.clickHandler}>Kuikka</button>
+        </div>
+      </Wrapper>
     );
   }
 }
 
-export default App;
+// GraphQL
+
+// Query from server
+const query = gql`
+  query TodoAppQuery {
+    location {
+      title
+    }
+  }
+`;
+
+// Call mutation
+const mutation = gql`
+  mutation fakeNews($locationTitle: String!) {
+    fakeNews(title: $locationTitle) {
+      title
+    }
+  }
+`;
+
+// Update local cache
+const update = {
+  options: {
+    update: (proxy, { data: { fakeNews } }) => {
+      // Get current data
+      const data = proxy.readQuery({ query });
+
+      // update data in cache
+      data.location = fakeNews;
+      // write changes
+      proxy.writeQuery({ query, data });
+    }
+  }
+};
+
+export default compose(graphql(query), graphql(mutation, update))(App);
