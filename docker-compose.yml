@@ -29,6 +29,8 @@ services:
     build: ./fake-services
     volumes:
       - "./fake-services/:/src/"
+    environment:
+      - GMAPS_ACCESS_KEY=${GMAPS_ACCESS_KEY}
     ports:
       - "3030:3000"
 

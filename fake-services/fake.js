@@ -49,7 +49,7 @@ const koskiPromise = ($, kosket) => new Promise((resolveMain) => {
         const gmaps = await fetch(
           `https://maps.googleapis.com/maps/api/geocode/json?&address=${
             address
-          }&key=AIzaSyCzVc8ifWAbcp1wUvn26IpmZWNn1-HA7IQ`
+          }&key=${process.env.GMAPS_ACCESS_KEY}`
         );
         const gdata = await gmaps.json();
 
