@@ -1,0 +1,3 @@
+# reactNodeMongoGraphql
+
+docker-compose up
