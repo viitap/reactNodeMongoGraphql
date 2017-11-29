@@ -1,18 +1,15 @@
-const {
-  GraphQLObjectType,
-  GraphQLString,
-} = require("graphql");
+const { GraphQLObjectType, GraphQLString } = require('graphql');
 
 const LocationType = new GraphQLObjectType({
-  name: "Location",
-  description: "...",
+  name: 'Location',
+  description: '...',
 
   fields: () => ({
     title: {
       type: GraphQLString,
-      resolve: location => location.title
-    }
-  })
+      resolve: location => location.title,
+    },
+  }),
 });
 
 module.exports = LocationType;

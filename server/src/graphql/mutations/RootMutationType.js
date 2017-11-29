@@ -1,30 +1,26 @@
-const {
-  GraphQLObjectType,
-  GraphQLString,
-  GraphQLList
-} = require('graphql');
+const { GraphQLObjectType, GraphQLString, GraphQLList } = require('graphql');
 
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 // Mongo model
-const Selection = mongoose.model("Selections", {
-  name: String
+const Selection = mongoose.model('Selections', {
+  name: String,
 });
 
 const LocationType = require('../types/LocationType');
 
 // Mutations
 const RootMutationType = new GraphQLObjectType({
-  name: "rootMutation",
+  name: 'rootMutation',
   fields: () => ({
     fakeNews: {
       type: new GraphQLList(LocationType),
       args: {
-        title: { type: GraphQLString }
+        title: { type: GraphQLString },
       },
-      resolve: async (value, {title} ) => {
-        mongoose.connect(`mongodb://mongo/someSelections`, {
-          useMongoClient: true
+      resolve: async (value, { title }) => {
+        mongoose.connect('mongodb://mongo/someSelections', {
+          useMongoClient: true,
         });
 
         const sel = new Selection({
@@ -34,9 +30,9 @@ const RootMutationType = new GraphQLObjectType({
         await sel.save();
 
         return [{ title }];
-      }
-    }
-  })
-})
+      },
+    },
+  }),
+});
 
 module.exports = RootMutationType;

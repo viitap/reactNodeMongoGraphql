@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { graphql, compose } from "react-apollo";
-import gql from "graphql-tag";
-import styled from "styled-components";
-import "./App.css";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { graphql, compose } from 'react-apollo';
+import gql from 'graphql-tag';
+import styled from 'styled-components';
+import './App.css';
 
 // My awesome styled component
 const Wrapper = styled.div`
@@ -15,27 +15,27 @@ class App extends Component {
     data: PropTypes.shape({
       locations: PropTypes.arrayOf(
         PropTypes.shape({
-          title: PropTypes.string
-        })
-      )
-    })
+          title: PropTypes.string,
+        }),
+      ),
+    }),
   };
 
   state = {
-    input: ""
+    input: '',
   };
 
   clickHandler = () => {
     const { input } = this.state;
     const { mutate } = this.props;
     mutate({
-      variables: { locationTitle: input }
+      variables: { locationTitle: input },
     });
   };
 
   inputChange = e => {
     this.setState({
-      input: e.target.value
+      input: e.target.value,
     });
   };
 
@@ -47,11 +47,7 @@ class App extends Component {
       <Wrapper>
         <div>Locations: {location.map(l => l.title)}</div>
         <div>
-          <input
-            type="text"
-            value={this.state.input}
-            onChange={this.inputChange}
-          />
+          <input type="text" value={this.state.input} onChange={this.inputChange} />
         </div>
         <div>
           <button onClick={this.clickHandler}>Kuikka</button>
@@ -93,11 +89,11 @@ const update = {
         query,
         data: {
           ...data,
-          location: fakeNews
-        }
+          location: fakeNews,
+        },
       });
-    }
-  }
+    },
+  },
 };
 
 export default compose(graphql(query), graphql(mutation, update))(App);
