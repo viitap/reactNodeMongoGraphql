@@ -1,6 +1,6 @@
 const express = require("express");
 const fetch = require("node-fetch");
-
+const uuid = require('uuid').v4;
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 
@@ -54,6 +54,7 @@ const koskiPromise = ($, kosket) => new Promise((resolveMain) => {
         const gdata = await gmaps.json();
 
         const data = {
+          id: uuid(),
           name,
           prices,
           address,
@@ -71,20 +72,30 @@ const koskiPromise = ($, kosket) => new Promise((resolveMain) => {
 
 });
 
+let cache = null
+
 app.get(`${path}/fishing/all-locations`, async (req, res) => {
-  const d = await fetch(
-    "http://kalastusluvat.kalapaikka.net/osta-kalastuslupa/#koskiluvat"
-  );
-  const t = await d.text();
-  const { window } = new JSDOM(t);
-  const $ = require("jQuery")(window);
 
-  const kosket = $(".features_items")[1];
-  const koskiArray = await koskiPromise($, kosket);
+  if(cache !== null) {
+    res.json(cache);
+  } else {
 
 
+    const d = await fetch(
+      "http://kalastusluvat.kalapaikka.net/osta-kalastuslupa/#koskiluvat"
+    );
+    const t = await d.text();
+    const { window } = new JSDOM(t);
+    const $ = require("jQuery")(window);
 
-  res.json(koskiArray);
+    const kosket = $(".features_items")[1];
+    const koskiArray = await koskiPromise($, kosket);
+
+    cache = koskiArray;
+
+    res.json(koskiArray);
+  }
+
 });
 
 app.listen(3000, () => console.log("Example app listening on port 3000!"));
