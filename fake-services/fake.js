@@ -76,25 +76,27 @@ let cache = null
 
 app.get(`${path}/fishing/all-locations`, async (req, res) => {
 
-  if(cache !== null) {
-    res.json(cache);
-  } else {
+  res.json(require('./data.json'))
+
+  // if(cache !== null) {
+  //   res.json(cache);
+  // } else {
 
 
-    const d = await fetch(
-      "http://kalastusluvat.kalapaikka.net/osta-kalastuslupa/#koskiluvat"
-    );
-    const t = await d.text();
-    const { window } = new JSDOM(t);
-    const $ = require("jQuery")(window);
+  //   const d = await fetch(
+  //     "http://kalastusluvat.kalapaikka.net/osta-kalastuslupa/#koskiluvat"
+  //   );
+  //   const t = await d.text();
+  //   const { window } = new JSDOM(t);
+  //   const $ = require("jQuery")(window);
 
-    const kosket = $(".features_items")[1];
-    const koskiArray = await koskiPromise($, kosket);
+  //   const kosket = $(".features_items")[1];
+  //   const koskiArray = await koskiPromise($, kosket);
 
-    cache = koskiArray;
+  //   cache = koskiArray;
 
-    res.json(koskiArray);
-  }
+  //   res.json(koskiArray);
+  // }
 
 });
 
