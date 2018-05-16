@@ -5,3 +5,9 @@ frontend/build
 
 server/node_modules/
 fake-services/node_modules/
+
+terraform/.terraform
+
+_build/
+
+.idea/
