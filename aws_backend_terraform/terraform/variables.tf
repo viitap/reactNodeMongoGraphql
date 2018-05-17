@@ -22,7 +22,7 @@ variable "s3_deploybucket_region" {
 }
 
 locals {
-  version = "0.1"
+  version = "${trimspace(file("${var.builddir}/version.info"))}"
   resource_prefix = "kalastuslupa_${terraform.workspace}"
 }
 

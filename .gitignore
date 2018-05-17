@@ -6,8 +6,7 @@ frontend/build
 server/node_modules/
 fake-services/node_modules/
 
-terraform/.terraform
-
-_build/
+aws_backend_terraform/terraform/.terraform/
+aws_backend_terraform/_build
 
 .idea/
