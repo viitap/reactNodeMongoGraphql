@@ -51,5 +51,6 @@ terraform workspace select my_dev
 `
 
 3) Use terraform apply to deploy the environment. Before confirming the terraform plan CAREFULLY CHECK the suggested changes. Don't say we did not warn you ;)
-´
+`
 terraform apply --var-file=~/secret.tfvars
+`
